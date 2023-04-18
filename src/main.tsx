@@ -4,6 +4,9 @@ import {RouterProvider} from 'react-router-dom';
 import router from './router';
 import {ConfigProvider, theme} from 'antd';
 import 'antd/dist/reset.css';
+import './cursor.css';
+import './index.css';
+import CursorProvider from './CursorProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
@@ -11,12 +14,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             theme={{
                 algorithm: theme.darkAlgorithm,
                 token: {
-                    colorPrimary: 'red',
-                    fontFamily: 'Monoton',
+                    colorPrimary: '#E5A7FC',
+                    colorBgBase: '#29002d',
+                    fontFamily: 'Cooper, cursive',
                 },
             }}
         >
-            <RouterProvider router={router} />
+            <CursorProvider>
+                <RouterProvider router={router} />
+            </CursorProvider>
         </ConfigProvider>
     </React.StrictMode>,
 );
