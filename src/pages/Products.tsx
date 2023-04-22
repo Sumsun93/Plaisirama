@@ -1,6 +1,8 @@
-import {Grid, Layout, theme, Typography} from 'antd';
+import {Grid, Layout, Spin, theme, Typography} from 'antd';
 import {ProductType} from '../types/product';
 import Product from '../components/Product';
+// @ts-ignore
+import SteinStore from 'stein-js-client';
 
 import durcirama from '../assets/productImages/durcirama.png';
 import lubricul from '../assets/productImages/lubricul.png';
@@ -8,6 +10,8 @@ import wrapqueue from '../assets/productImages/wrapqueue.png';
 import chocabite from '../assets/productImages/chocabite.png';
 import plaisiramal from '../assets/productImages/plaisiramal.png';
 import styled, {keyframes} from 'styled-components';
+import {useEffect, useState} from 'react';
+import {useCart} from 'react-use-cart';
 
 const Products = () => {
     const {
@@ -15,45 +19,96 @@ const Products = () => {
     } = theme.useToken();
     const {md} = Grid.useBreakpoint();
 
-    const products: ProductType[] = [
-        {
-            image: lubricul,
-            name: 'Lubricul',
-            slogan: 'Glisser comme un pro, sans jamais dire «Oups!»',
-            description:
-                "Lubricul, le lubrifiant qui glisse entre vos doigts comme une perle de rosée sur une feuille de nénuphar ! Avec son pouvoir de glisse époustouflant, il rendra vos moments intimes aussi fluides qu'une danse de pingouins sur la banquise. Dites adieu aux frictions gênantes et bonjour au plaisir sans limites avec Lubricul ! En plus il est 100% compatible avec nos produits WrapQueue et PlaisiraMal !",
-        },
-        {
-            image: wrapqueue,
-            name: 'WrapQueue',
-            slogan: 'Enfourne le, manque juste la sauce',
-            description:
-                "Protégez votre queue avec WrapQueue, le préservatif qui ne se défile jamais ! Avec son design innovant et sa résistance exceptionnelle, WrapQueue est votre meilleur allié pour des moments intimes en toute sécurité. Avec WrapQueue, enfilez-le et c'est parti pour la queue-leu-leu !",
-        },
-        {
-            image: plaisiramal,
-            name: 'PlaisiraMal',
-            slogan: 'Si tu as mal, c’est l’anal',
-            description:
-                'Découvrez "PlaisiraMal", le gode osé qui vous fera grimper au septième ciel ! Parfait pour les aventuriers du plaisir, sa texture veinée et sa forme ergonomique vous garantissent des sensations inoubliables. Osez l\'extase avec PlaisiraMal et préparez-vous à hurler...de bonheur ! Soyez audacieux, soyez coquin, soyez PlaisiraMal !',
-        },
-        {
-            image: chocabite,
-            name: 'Chocabite',
-            slogan: 'C’est fort en grumeaux',
-            description:
-                "Vous en avez l'eau à la bouche ? Alors préparez-vous à croquer dans nos Chocabites, les biscuits érotiques qui vous feront rougir de plaisir ! Leur forme phallique et leur chocolat dégoulinant sont conçus pour satisfaire vos désirs les plus ardents et titiller votre imagination.",
-        },
-        {
-            image: durcirama,
-            name: 'Durcirama',
-            slogan: 'Tout Plaisirama en toi',
-            description:
-                "Marre de flancher au moment crucial ? Envie de monter sur le ring et de tenir jusqu'à la fin du round ? Avec Durcirama, devenez le champion de l'endurance sexuelle ! Plus besoin de prier pour durer, laissez notre pilule vous tenir la barre.",
-        },
-    ];
+    const [products, setProducts] = useState<ProductType[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const getProducts = async () => {
+        const store = new SteinStore(
+            'https://api.steinhq.com/v1/storages/64426713eced9b09e9cb274b',
+        );
+        store.read('produits').then((res: any) => {
+            const newProducts: ProductType[] = [
+                {
+                    id: 1,
+                    image: lubricul,
+                    name: '',
+                    slogan: '',
+                    price: 0,
+                    description: '',
+                    isAvailable: true,
+                },
+                {
+                    id: 2,
+                    image: wrapqueue,
+                    name: '',
+                    slogan: '',
+                    price: 0,
+                    description: '',
+                    isAvailable: true,
+                },
+                {
+                    id: 3,
+                    image: plaisiramal,
+                    name: '',
+                    slogan: '',
+                    price: 0,
+                    description: '',
+                    isAvailable: true,
+                },
+                {
+                    id: 4,
+                    image: chocabite,
+                    name: '',
+                    slogan: '',
+                    price: 0,
+                    description: '',
+                    isAvailable: true,
+                },
+                {
+                    id: 5,
+                    image: durcirama,
+                    name: '',
+                    slogan: '',
+                    price: 0,
+                    description: '',
+                    isAvailable: true,
+                },
+            ];
+
+            res.forEach((product: any, index: number) => {
+                newProducts[index].name = product.name;
+                newProducts[index].slogan = product.slogan;
+                newProducts[index].description = product.description;
+                newProducts[index].price = product.price;
+                newProducts[index].isAvailable = product.isAvailable === 'TRUE';
+            });
+
+            setProducts(newProducts);
+
+            setIsLoading(false);
+        });
+    };
+
+    useEffect(() => {
+        getProducts();
+    }, []);
 
     if (md === undefined) return null;
+
+    if (isLoading)
+        return (
+            <Spin
+                style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    fontSize: '2em',
+                }}
+                size={'large'}
+                tip="Chargement de votre plaisir..."
+            />
+        );
 
     return (
         <Layout.Content

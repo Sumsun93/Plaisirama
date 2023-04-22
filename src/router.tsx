@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import React from 'react';
 import Products from './pages/Products';
 import Team from './pages/Team';
+import Cart from './pages/Cart';
 import Header from './components/Header';
 import {Layout} from 'antd';
 
@@ -32,6 +33,10 @@ const router = createHashRouter([
     {
         path: '/team',
         element: <Route Component={Team} />,
+    },
+    {
+        path: '/cart',
+        element: <Route Component={Cart} />,
     },
 ]);
 

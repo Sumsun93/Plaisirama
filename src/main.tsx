@@ -7,6 +7,7 @@ import 'antd/dist/reset.css';
 import './cursor.css';
 import './index.css';
 import CursorProvider from './CursorProvider';
+import {CartProvider} from 'react-use-cart';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
@@ -20,9 +21,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 },
             }}
         >
-            <CursorProvider>
-                <RouterProvider router={router} />
-            </CursorProvider>
+            <CartProvider>
+                <CursorProvider>
+                    <RouterProvider router={router} />
+                </CursorProvider>
+            </CartProvider>
         </ConfigProvider>
     </React.StrictMode>,
 );

@@ -87,7 +87,6 @@ const Header = () => {
                         color: colorPrimary,
                         backgroundColor: 'transparent',
                         fontSize: md ? '2.5em' : '1em',
-                        margin: md ? '0 50px' : '0',
                     }}
                     onClick={() => {
                         navigate('/team');
@@ -100,6 +99,28 @@ const Header = () => {
                     }}
                 >
                     L'équipe
+                </Item>
+                <Item
+                    theme={theme}
+                    key="2"
+                    selected={location.pathname === '/cart'}
+                    style={{
+                        color: colorPrimary,
+                        backgroundColor: 'transparent',
+                        fontSize: md ? '2.5em' : '1em',
+                        marginRight: '20px',
+                    }}
+                    onClick={() => {
+                        navigate('/cart');
+                    }}
+                    onMouseEnter={() => {
+                        onCursor('pointer');
+                    }}
+                    onMouseLeave={() => {
+                        onCursor(false);
+                    }}
+                >
+                    Panier
                 </Item>
             </Menu>
         </Layout.Header>
